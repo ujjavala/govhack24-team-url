@@ -1,0 +1,483 @@
+openapi: 3.0.3
+info:
+  title: Welcome to Haven - OpenAPI 3.0
+  description: This openapi spec contains details for apis in Haven
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://haven.swagger.io/api/v3
+tags:
+- name: Haven
+  description: Everything about finding a safe space
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: user
+  description: Operations about user
+paths:
+  /users:
+    get:
+      tags:
+      - user
+      summary: Get users with status
+      operationId: usersGET
+      parameters:
+      - name: status
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                x-content-type: application/json
+      x-swagger-router-controller: User
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      requestBody:
+        description: Created user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-swagger-router-controller: User
+  /user/{id}:
+    get:
+      tags:
+      - user
+      summary: Get a user by its id.
+      operationId: userIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - user
+      summary: Update a user.
+      operationId: userIdPUT
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      x-swagger-router-controller: User
+    delete:
+      tags:
+      - user
+      summary: Delete a user.
+      operationId: userIdDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                x-content-type: application/json
+      x-swagger-router-controller: User
+  /user/login:
+    get:
+      tags:
+      - user
+      summary: Logs user into the system
+      description: ""
+      operationId: loginUser
+      parameters:
+      - name: username
+        in: query
+        description: The user name for login
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              style: simple
+              explode: false
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              style: simple
+              explode: false
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/xml:
+              schema:
+                type: string
+                x-content-type: application/xml
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+      x-swagger-router-controller: User
+  /user/logout:
+    get:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      description: ""
+      operationId: logoutUser
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+      x-swagger-router-controller: User
+  /feeds:
+    get:
+      tags:
+      - feed
+      summary: Get users with status
+      operationId: feedsGET
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feed'
+                x-content-type: application/json
+      x-swagger-router-controller: Feed
+    post:
+      tags:
+      - feed
+      summary: Create feed
+      description: This created feed
+      operationId: createFeed
+      requestBody:
+        description: Created feed object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feed'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Feed'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feed'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feed'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Feed'
+      x-swagger-router-controller: Feed
+  /feed/{id}:
+    get:
+      tags:
+      - feed
+      summary: Get a feed by its id.
+      operationId: feedIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feed'
+      x-swagger-router-controller: Feed
+    put:
+      tags:
+      - feed
+      summary: Update a feed.
+      operationId: feedIdPUT
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feed'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feed'
+      x-swagger-router-controller: Feed
+    delete:
+      tags:
+      - feed
+      summary: Delete a feed.
+      operationId: feedIdDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                x-content-type: application/json
+      x-swagger-router-controller: Feed
+  /service-suggester:
+    get:
+      tags:
+      - service-suggester
+      summary: Get service by its location.
+      operationId: service_suggesterGET
+      parameters:
+      - name: location
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+      x-swagger-router-controller: ServiceSuggester
+  /safe-space-suggester:
+    get:
+      tags:
+      - safe-space-suggester
+      summary: Get service by its location.
+      operationId: safe_space_suggesterGET
+      parameters:
+      - name: location
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema: {}
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvacuationPoint'
+      x-swagger-router-controller: SafeSpaceSuggester
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: jane_doe
+        firstName:
+          type: string
+          example: Jane
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john@email.com
+        location:
+          type: string
+          example: olympic park
+        status:
+          type: string
+          example: active
+        isVolunteer:
+          type: boolean
+          example: true
+      example:
+        firstName: Jane
+        lastName: Doe
+        isVolunteer: true
+        location: olympic park
+        id: 10
+        email: john@email.com
+        username: jane_doe
+        status: active
+    Feed:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        userId:
+          type: integer
+          format: int64
+          example: 123
+        description:
+          type: string
+          example: need help around olympic park
+        createdAt:
+          type: string
+          example: James
+        deletedAt:
+          type: string
+          example: john@email.com
+        location:
+          type: string
+          example: olympic park
+        status:
+          type: integer
+          description: Feed Status
+          format: int32
+          example: 1
+      example:
+        createdAt: James
+        deletedAt: john@email.com
+        description: need help around olympic park
+        location: olympic park
+        id: 10
+        userId: 123
+        status: 1
+    Service:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        description:
+          type: string
+          example: need help around olympic park
+      example:
+        description: need help around olympic park
+        id: 10
+    EvacuationPoint:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        location:
+          type: string
+          example: Near George Street
+      example:
+        location: Near George Street
+        id: 10
+    Alert:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        description:
+          type: string
+          example: Bushfire 2km away
+        createdAt:
+          type: string
+          example: James
+        deletedAt:
+          type: string
+        type:
+          type: string
+        mapUrl:
+          type: string
